@@ -22,4 +22,5 @@ Route::group(['middleware' => ['guest']], function () {
 
 Route::group(['middleware' => ['isAuthenticated']], function () {
     Route::get('/dashboard', [HomeController::class,'dashboard'])->name('dashboard');
+    Route::post('/logout', [AuthController::class,'logout'])->name('logout');
 });

@@ -13,7 +13,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Manage Roles</a>
                 </li>
-
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('product.index')}}">Product</a>
+                </li>
             </ul>
             <form class="d-flex" role="search">
                 <span class="nav-item dropdown">
@@ -23,7 +25,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <button id="logout">Logout</button>
+                            <a href="#" class="text-center text-decoration-none p-2" id="logout">Logout</a>
                         </li>
                     </ul>
                 </span>

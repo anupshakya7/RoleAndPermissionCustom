@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -43,7 +44,7 @@ class ProductController extends Controller
             'product_title' => 'required|string|max:255',
             'product_description' => 'required|string',
             'product_amount' => 'required|numeric',
-            'product_image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'product_image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -94,7 +95,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('product.edit', compact('product'));
     }
 
     /**
@@ -106,7 +107,42 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'product_title' => 'required|string|max:255',
+            'product_description' => 'required|string',
+            'product_status' => 'required|numeric',
+            'product_amount' => 'required|numeric',
+            'product_image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        if ($request->hasFile('product_image')) {
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
+            }
+            $image = $request->file('product_image');
+
+            $filename = Str::slug($request->product_title).'-'.time().'.'.$image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('images/products', $filename, 'public');
+        }
+
+
+        $updateItem = $product->update([
+            'title' => $request->product_title,
+            'description' => $request->product_description,
+            'image' => $imagePath,
+            'is_active' => $request->product_status,
+            'amount' => $request->product_amount,
+        ]);
+
+        if ($updateItem) {
+            return redirect()->route('product.index')->with('success', 'Product Inserted Successfully!!!');
+        } else {
+            return redirect()->back()->with('error', 'Fail to Update Product');
+        }
     }
 
     /**
@@ -117,6 +153,11 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $deleteItem = $product->delete();
+        if ($deleteItem) {
+            return redirect()->back()->with('success', 'Product Delete Successfully!!!');
+        } else {
+            return redirect()->back()->with('error', 'Fail to Delete Product');
+        }
     }
 }

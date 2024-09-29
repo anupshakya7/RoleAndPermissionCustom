@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\User\OrderController;
+use App\Http\Controllers\User\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,14 +16,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', [HomeController::class,'dashboard']);
+Route::resource('/product', ProductController::class);
 
-Route::group(['middleware' => ['guest']], function () {
-    Route::get('/', [AuthController::class,'login'])->name('auth.login');
-    Route::post('/', [AuthController::class,'loginSubmit'])->name('auth.login.submit');
-});
-
-Route::group(['middleware' => ['isAuthenticated']], function () {
-    Route::get('/dashboard', [HomeController::class,'dashboard'])->name('dashboard');
-    Route::resource('product', ProductController::class);
-    Route::post('/logout', [AuthController::class,'logout'])->name('logout');
-});
+//Checkout Order
+Route::post('check-out', [OrderController::class,'checkout'])->name('checkout');

@@ -28,7 +28,7 @@
         <div class="product d-inline-flex">
             @forelse($latestProducts as $latestProduct)
             <div class="card m-3" style="width: 18rem;">
-                <img src="{{asset('storage/'.$latestProduct->image)}}" height="250" class="card-img-top"
+                <img src="{{asset('storage/'.$latestProduct->image)}}" height="280" class="card-img-top p-2"
                     alt="{{$latestProduct->title}}">
                 <div class="card-body">
                     <h5 class="card-title">{{$latestProduct->title}}</h5>

@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', [HomeController::class,'dashboard']);
+Route::get('/', [HomeController::class,'dashboard'])->name('home');
 Route::resource('/product', ProductController::class);
 
 //Checkout Order

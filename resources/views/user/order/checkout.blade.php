@@ -22,22 +22,34 @@
         <div class="col-md-6">
             <h3>Pay With</h3>
             <ul class="list-group">
-                <li class="list-group-item">
-                    <form method="POST">
-                        <input type="text" id="amount" name="amount" value="100" required>
-                        <input type="text" id="tax_amount" name="tax_amount" value="10" required>
-                        <input type="text" id="total_amount" name="total_amount" value="110" required>
-                        <input type="text" id="transaction_uuid" name="transaction_uuid" required>
-                        <input type="text" id="product_code" name="product_code" value="EPAYTEST" required>
-                        <input type="text" id="product_service_charge" name="product_service_charge" value="0" required>
-                        <input type="text" id="product_delivery_charge" name="product_delivery_charge" value="0"
-                            required>
-                        <input type="text" id="success_url" name="success_url" value="https://esewa.com.np" required>
-                        <input type="text" id="failure_url" name="failure_url" value="https://google.com" required>
-                        <input type="text" id="signed_field_names" name="signed_field_names"
-                            value="total_amount,transaction_uuid,product_code" required>
-                        <input type="text" id="signature" name="signature" " required>
-                        <input value=" Submit" type="submit">
+                {{-- <li class="list-group-item bg-dark p-3">
+                    <form action="https://uat.esewa.com.np/epay/main" method="POST">
+                        <input type="hidden" name="tAmt" value="{{$product->amount}}">
+                        <input type="hidden" name="amt" value="{{$product->amount}}">
+                        <input type="hidden" name="txAmt" value="0">
+                        <input type="hidden" name="psc" value="0">
+                        <input type="hidden" name="psc" value="0">
+                        <input type="hidden" name="pdc" value="0">
+                        <input type="hidden" name="scd" value="epay_amount">
+                        <input type="hidden" name="pid" value="{{$order->invoice_no}}">
+                        <input type="hidden" name="su" value="{{route('esewa.success')}}">
+                        <input type="hidden" name="fu" value="{{route('esewa.fail')}}">
+                        <input type="image" src="{{asset('images/esewa.png')}}" width="150" height="40" alt="Submit">
+                    </form>
+                </li> --}}
+                <li class="list-group-item bg-dark p-3">
+                    <input type="image" src="{{asset('images/fonepay.png')}}" width="150" height="40" alt="Submit">
+                    <form action="" method="GET" id="payment_form">
+                        <input type="hidden" name="PID" value="{{$PID}}">
+                        <input type="hidden" name="MD" value="{{$MD}}">
+                        <input type="hidden" name="AMT" value="{{$AMT}}">
+                        <input type="hidden" name="CRN" value="{{$CRN}}">
+                        <input type="hidden" name="DT" value="{{$DT}}">
+                        <input type="hidden" name="R1" value="{{$R1}}">
+                        <input type="hidden" name="R2" value="{{$R2}}">
+                        <input type="hidden" name="DV" value="{{$DV}}">
+                        <input type="hidden" name="RU" value="{{$RU}}">
+                        <input type="hidden" name="PRN" value="{{$PRN}}">
                     </form>
                 </li>
             </ul>

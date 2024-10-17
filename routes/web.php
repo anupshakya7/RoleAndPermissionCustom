@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\User\EsewaController;
+use App\Http\Controllers\User\FonepayController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\ProductController;
@@ -21,3 +23,13 @@ Route::resource('/product', ProductController::class);
 
 //Checkout Order
 Route::post('check-out', [OrderController::class,'checkout'])->name('checkout');
+
+//Esewa Success
+Route::any('esewa/success', [EsewaController::class,'success'])->name('esewa.success');
+
+//Esewa Fail
+Route::any('esewa/fail', [EsewaController::class,'fail'])->name('esewa.fail');
+
+//Fonepay Payment Verify
+Route::get('fonepay', [FonepayController::class,'index']);
+Route::get('fonepay/payment/verify', [FonepayController::class,'verifyPayment'])->name('verifyPayment');

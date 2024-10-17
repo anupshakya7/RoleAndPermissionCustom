@@ -11,7 +11,10 @@
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Manage Roles</a>
+                    <a class="nav-link" href="{{route('manageRole')}}">Manage Roles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('managePermission')}}">Manage Permissions</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('product.index')}}">Product</a>

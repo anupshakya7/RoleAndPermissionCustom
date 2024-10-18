@@ -26,6 +26,7 @@
             @enderror
         </div>
         <button type="submit" class="btn btn-primary">Login</button>
+        <span class="float-end">Don't have an Account? <a href="{{route('auth.register')}}">Register</a></span>
     </form>
 </div>
 @endsection

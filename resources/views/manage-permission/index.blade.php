@@ -58,14 +58,12 @@
             <th scope="row">{{++$i}}</th>
             <td>{{$permission->name}}</td>
             <td>
-                @if(strtolower($permission->name)!='user')
                 <button class="btn btn-primary updatePermissionEditBtn" data-id="{{$permission->id}}"
                     data-name="{{$permission->name}}" data-bs-toggle="modal"
                     data-bs-target="#updatePermissionModal">Edit</button>
                 <button data-id="{{$permission->id}}" data-name="{{$permission->name}}"
                     class="btn btn-danger deletePermissionBtn" data-bs-toggle="modal"
                     data-bs-target="#deletePermissionModal">Delete</button>
-                @endif
             </td>
         </tr>
         @endforeach
@@ -117,12 +115,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="Permission_id" id="deletePermissionId">
-                    <p>Are you sure, You want to delete the <span class="delete-Permission"></span> Permission?</p>
+                    <input type="hidden" name="permission_id" id="deletePermissionId">
+                    <p>Are you sure, You want to delete the <span class="delete-permission"></span> Permission?
+                        If you will delete this permission, then this permission is deleted from All users.
+                    </p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-danger delete-Permission-btn">Delete</button>
+                    <button type="submit" class="btn btn-danger delete-permission-btn">Delete</button>
                 </div>
             </form>
         </div>
@@ -167,15 +167,15 @@
 
         //Delete Permission Modal
         $('.deletePermissionBtn').click(function(){
-            var PermissionId = $(this).data('id');
-            var PermissionName = $(this).data('name');
+            var permissionId = $(this).data('id');
+            var permissionName = $(this).data('name');
 
-            $('.delete-Permission').text(PermissionName);
-            $('.deletePermissionId').val(PermissionId);
+            $('.delete-permission').html('<b>'+permissionName+'</b>');
+            $('.deletePermissionId').val(permissionId);
 
             $('#deletePermissionForm').submit(function(e){
                 e.preventDefault();
-                $('.delete-Permission-btn').prop('disabled',true);
+                $('.delete-permission-btn').prop('disabled',true);
 
                 // var formData = $(this).serialize();
 
@@ -183,7 +183,7 @@
                     url:"{{route('deletePermission')}}",
                     type:"POST",
                     data:{
-                        'Permission':PermissionId
+                        'permission':permissionId
                     },
                     headers:{
                         'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
@@ -206,17 +206,17 @@
 
         //Update Permission Modal
         $('.updatePermissionEditBtn').click(function(){
-            var PermissionId = $(this).data('id');
-            var PermissionName = $(this).data('name');
+            var permissionId = $(this).data('id');
+            var permissionName = $(this).data('name');
 
-            $('#updatePermissionName').val(PermissionName);
-            $('#updatePermissionId').val(PermissionId);
+            $('#updatePermissionName').val(permissionName);
+            $('#updatePermissionId').val(permissionId);
             
             $('#updatePermissionForm').submit(function(e){
                 e.preventDefault();
                 $('.updatePermissionBtn').prop('disabled',true);
 
-                var PermissionValue = $('#updatePermissionName').val();
+                var permissionValue = $('#updatePermissionName').val();
 
                 $.ajax({
                     url:"{{route('updatePermission')}}",
@@ -225,8 +225,8 @@
                         'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
                     },
                     data:{
-                        Permission_id:PermissionId,
-                        Permission:PermissionValue
+                        permission_id:permissionId,
+                        permission:permissionValue
                     },
                     success:function(response){
                         $('.updatePermissionBtn').prop('disabled',false);

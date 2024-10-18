@@ -10,11 +10,16 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('manageRole')}}">Manage Roles</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('managePermission')}}">Manage Permissions</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Role & Permission
+                    </a>
+                    <ul class="dropdown-menu" style="width:200px">
+                        <li><a class="nav-link" href="{{route('manageRole')}}">Manage Roles</a></li>
+                        <li><a class="nav-link" href="{{route('managePermission')}}">Manage Permissions</a></li>
+                        <li><a class="nav-link" href="{{route('assignPermissionRole')}}">Assign Permission-Role</a></li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('product.index')}}">Product</a>

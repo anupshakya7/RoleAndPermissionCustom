@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['guest']], function () {
     Route::get('/', [AuthController::class,'login'])->name('auth.login');
     Route::post('/', [AuthController::class,'loginSubmit'])->name('auth.login.submit');
+    Route::get('/register', [AuthController::class,'register'])->name('auth.register');
+    Route::post('/register', [AuthController::class,'registerSubmit'])->name('auth.register.submit');
 });
 
 Route::group(['middleware' => ['isAuthenticated']], function () {
@@ -26,6 +28,11 @@ Route::group(['middleware' => ['isAuthenticated']], function () {
     //Manage Permission Routes
     Route::get('/manage-permission', [PermissionController::class,'managePermission'])->name('managePermission');
     Route::post('/create-permission', [PermissionController::class,'createPermission'])->name('createPermission');
-    Route::post('/update-permission', [RoleController::class,'updatePermission'])->name('updatePermission');
-    Route::post('/delete-permission', [RoleController::class,'deletePermission'])->name('deletePermission');
+    Route::post('/update-permission', [PermissionController::class,'updatePermission'])->name('updatePermission');
+    Route::post('/delete-permission', [PermissionController::class,'deletePermission'])->name('deletePermission');
+
+    //Assign Permission to Role Routes
+    Route::get('/assign-permission-role', [PermissionController::class,'assignPermissionRole'])->name('assignPermissionRole');
+    Route::post('/create-permission-role', [PermissionController::class,'createPermissionRole'])->name('createPermissionRole');
+    Route::post('/update-permission-role', [PermissionController::class,'updatePermissionRole'])->name('updatePermissionRole');
 });

@@ -19,6 +19,8 @@
                         <li><a class="nav-link" href="{{route('manageRole')}}">Manage Roles</a></li>
                         <li><a class="nav-link" href="{{route('managePermission')}}">Manage Permissions</a></li>
                         <li><a class="nav-link" href="{{route('assignPermissionRole')}}">Assign Permission-Role</a></li>
+                        <li><a class="nav-link" href="{{route('assignPermissionRoute')}}">Assign Permission-Route</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item">

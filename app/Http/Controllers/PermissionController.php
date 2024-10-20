@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Permission;
 use App\Models\PermissionRole;
+use App\Models\PermissionRoute;
 use App\Models\Role;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 
 class PermissionController extends Controller
@@ -129,6 +132,120 @@ class PermissionController extends Controller
             return response()->json([
                 'success' => true,
                 'msg' => 'Permission is assigned to selected Role!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'msg' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function deletePermissionRole(Request $request)
+    {
+        try {
+            PermissionRole::where('permission_id', $request->permission_id)->delete();
+            return response()->json([
+                'success' => true,
+                'msg' => 'Delete Successfully!!!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'msg' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function assignPermissionRoute()
+    {
+        $permissions = Permission::all();
+        $routes = Route::getRoutes();
+
+        $middlewareGroup = 'isAuthenticated';
+
+        $routeDetails = [];
+
+        foreach ($routes as $route) {
+            $middlewares = $route->gatherMiddleware();
+            if (in_array($middlewareGroup, $middlewares)) {
+                $routeName = $route->getName();
+                if ($routeName !== 'dashboard' && $routeName !== 'logout') {
+                    $routeDetails[] = [
+                        'name' => $route->getName(),
+                        'uri' => $route->uri()
+                    ];
+                }
+            }
+        }
+
+        $routerPermissions = PermissionRoute::with('permission')->get();
+
+        return view('assign-permission-route.index', compact('permissions', 'routeDetails', 'routerPermissions'));
+    }
+
+    public function createPermissionRoute(Request $request)
+    {
+        try {
+            $isExistPermissionToRoute = PermissionRoute::where([
+                'permission_id' => $request->permission_id
+            ])->first();
+
+            if ($isExistPermissionToRoute) {
+                return response()->json([
+                    'success' => false,
+                    'msg' => 'Permission is already assigned!!!'
+                ]);
+            }
+
+            PermissionRoute::create([
+                'permission_id' => $request->permission_id,
+                'router' => $request->route
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'msg' => 'Permission is assigned to selected router!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'msg' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function updatePermissionRoute(Request $request)
+    {
+        try {
+            $isExistPermission = PermissionRoute::whereNotIn('id', [$request->id])->where([
+                'permission_id' => $request->permission_id
+            ])->first();
+
+            $isExistRouter = PermissionRoute::whereNotIn('id', [$request->id])->where([
+                'router' => $request->route
+            ])->first();
+
+            if ($isExistPermission) {
+                return response()->json([
+                    'success' => false,
+                    'msg' => 'Permission is already assigned!!!'
+                ]);
+            } elseif ($isExistRouter) {
+                return response()->json([
+                    'success' => false,
+                    'msg' => 'Route is already assigned!!!'
+                ]);
+            }
+
+            PermissionRoute::where('id', $request->id)->update([
+                'permission_id' => $request->permission_id,
+                'router' => $request->route
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'msg' => 'Permission is updated to selected router!'
             ]);
         } catch (\Exception $e) {
             return response()->json([

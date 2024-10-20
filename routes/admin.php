@@ -35,4 +35,10 @@ Route::group(['middleware' => ['isAuthenticated']], function () {
     Route::get('/assign-permission-role', [PermissionController::class,'assignPermissionRole'])->name('assignPermissionRole');
     Route::post('/create-permission-role', [PermissionController::class,'createPermissionRole'])->name('createPermissionRole');
     Route::post('/update-permission-role', [PermissionController::class,'updatePermissionRole'])->name('updatePermissionRole');
+    Route::post('/delete-permission-role', [PermissionController::class,'deletePermissionRole'])->name('deletePermissionRole');
+
+    //Assign Permission to Route
+    Route::get('assign-permission-route', [PermissionController::class,'assignPermissionRoute'])->name('assignPermissionRoute');
+    Route::post('create-permission-route', [PermissionController::class,'createPermissionRoute'])->name('createPermissionRoute');
+    Route::post('update-permission-route', [PermissionController::class,'updatePermissionRoute'])->name('updatePermissionRoute');
 });

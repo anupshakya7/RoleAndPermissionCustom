@@ -2,7 +2,7 @@
 @section('pagetitle','Dashboard')
 @section('content')
 <div class="my-3">
-    <h3 class="d-inline">Manage User</h3>
+    <h3 class="d-inline">Assign Permission to Role</h3>
     <!-- Assign Permission to Role -->
     <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal"
         data-bs-target="#assignPermissionRoleModal">
@@ -77,14 +77,15 @@
                 <button class="btn btn-primary updateAssignPermissionRoleBtn"
                     data-permission="{{$permissionsWithRole->id}}" data-roles="{{$permissionsWithRole->roles}}"
                     data-bs-toggle="modal" data-bs-target="#updateAssignPermissionRoleModal">Edit</button>
-                <button class="btn btn-danger">Delete</button>
+                <button class="btn btn-danger deleteAssignPermissionRole" data-permission="{{$permissionsWithRole->id}}"
+                    data-bs-toggle="modal" data-bs-target="#deleteAssignPermissionRoleModal">Delete</button>
             </td>
         </tr>
         @endforeach
     </tbody>
 </table>
 
-<!-- Assign Permission to Role -->
+<!-- Assign Update Permission to Role -->
 <div class="modal fade" id="updateAssignPermissionRoleModal" tabindex="-1"
     aria-labelledby="updateAssignPermissionRoleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -126,7 +127,34 @@
         </div>
     </div>
 </div>
-<!-- Assign Permission to Role -->
+<!-- Assign Update Permission to Role -->
+
+<!-- Assign Delete Permission to Role -->
+<div class="modal fade" id="deleteAssignPermissionRoleModal" tabindex="-1"
+    aria-labelledby="deleteAssignPermissionRoleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="delete-form">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="deleteAssignPermissionRoleModalLabel">Delete Assign Permission to
+                        Role
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="permission_id" id="permission_id">
+                    <p>Are you sure you want to delete?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger deletetAssignFormPermissionRoleBtn">Delete
+                        Assign</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Assign Delete Permission to Role -->
 @endsection
 @push('script')
 <script>
@@ -218,6 +246,37 @@
             })
         })
         //Update Assign Permission Role Modal
+
+        //Delete Assign Permission Role Modal
+        $('.deleteAssignPermissionRole').click(function(e){
+            e.preventDefault();
+            var permission_id = $(this).data('permission');
+            $('permission_id').val(permission_id);
+
+            $('#delete-form').submit(function(e){
+                e.preventDefault();
+                $.ajax({
+                    url:"{{route('deletePermissionRole')}}",
+                    type:"POST",
+                    headers:{
+                        'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+                    },
+                    data:{
+                        'permission_id':permission_id
+                    },
+                    success:function(response){
+                        if(response.success){
+                            alert(response.msg);
+                            location.reload();
+                        }else{
+                            alert(response.msg);
+                        }
+                    }
+                })
+            })
+
+        })
+        //Delete Assign Permission Role Modal
     });
 </script>
 @endpush

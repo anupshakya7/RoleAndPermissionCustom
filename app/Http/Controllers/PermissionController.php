@@ -254,4 +254,26 @@ class PermissionController extends Controller
             ]);
         }
     }
+
+    public function deletePermissionRoute(Request $request)
+    {
+        try {
+            $request->validate([
+                'id' => 'required'
+            ]);
+
+            PermissionRoute::where('id', $request->id)->delete();
+
+            return response()->json([
+                'success' => true,
+                'msg' => 'Permission is deleted of router!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'msg' => $e->getMessage()
+            ]);
+        }
+    }
+
 }

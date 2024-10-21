@@ -75,8 +75,8 @@
                         data-permission-id="{{$routerPermission->permission_id}}"
                         data-router="{{$routerPermission->router}}" data-bs-toggle="modal"
                         data-bs-target="#updateModal">Edit</button>
-                    <button class="btn btn-danger deleteBtn" data-bs-toggle="modal"
-                        data-bs-target="#deleteAssignPermissionRoleModal">Delete</button>
+                    <button class="btn btn-danger deleteBtn" data-id="{{$routerPermission->id}}" data-bs-toggle="modal"
+                        data-bs-target="#deleteModal">Delete</button>
                 </td>
             </tr>
             @endforeach
@@ -122,6 +122,29 @@
         </div>
     </div>
     <!-- Assign Permission to Route -->
+    <!-- Delete Permission to Route -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="delete-form">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Permission to Route
+                        </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id" id="delete_id">
+                        <p>Are you sure you want to delete?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary submitDeleteBtn">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Delete Permission to Route -->
 
     @endsection
     @push('script')
@@ -202,6 +225,42 @@
                 });
             })
             //Update Permission to Route Modal
+
+             //Delete Permission to Route Modal
+             $('.deleteBtn').click(function(e){
+                e.preventDefault();
+                var id = $(this).data('id');
+
+                $('#delete_id').val(id);
+
+                $('#delete-form').submit(function(e) {
+                    e.preventDefault();
+                    $('.submitDeleteBtn').prop('disabled', true);
+
+                    // var formData = $(this).serialize();
+
+                    $.ajax({
+                        url: "{{ route('deletePermissionRoute') }}",
+                        type: "POST",
+                        data: {
+                            'id':id
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            $('.submitDeleteBtn').prop('disabled', false);
+                            if (response.success) {
+                                alert(response.msg);
+                                location.reload();
+                            } else {
+                                alert(response.msg);
+                            }
+                        }
+                    });
+                });
+            })
+            //Delete Permission to Route Modal
 
         });
     </script>

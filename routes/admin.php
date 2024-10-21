@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PermissionController;
@@ -41,4 +42,11 @@ Route::group(['middleware' => ['isAuthenticated']], function () {
     Route::get('assign-permission-route', [PermissionController::class,'assignPermissionRoute'])->name('assignPermissionRoute');
     Route::post('create-permission-route', [PermissionController::class,'createPermissionRoute'])->name('createPermissionRoute');
     Route::post('update-permission-route', [PermissionController::class,'updatePermissionRoute'])->name('updatePermissionRoute');
+    Route::post('delete-permission-route', [PermissionController::class,'deletePermissionRoute'])->name('deletePermissionRoute');
+
+    //Manage Users Route
+    Route::get('/users', [UserController::class,'users'])->name('users');
+    Route::post('/create-user', [UserController::class,'createUser'])->name('createUser');
+    Route::post('/update-user', [UserController::class,'updateUser'])->name('updateUser');
+    Route::post('/delete-user', [UserController::class,'deleteUser'])->name('deleteUser');
 });

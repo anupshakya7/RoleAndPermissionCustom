@@ -17,8 +17,11 @@ Route::group(['middleware' => ['guest']], function () {
 
 Route::group(['middleware' => ['isAuthenticated']], function () {
     Route::get('/dashboard', [HomeController::class,'dashboard'])->name('dashboard');
-    Route::resource('product', ProductController::class);
     Route::post('/logout', [AuthController::class,'logout'])->name('logout');
+});
+
+Route::group(['middleware' => ['isAuthenticated','havePermission']], function () {
+    Route::resource('product', ProductController::class);
 
     // Manage Roles Routes
     Route::get('/manage-role', [RoleController::class,'manageRole'])->name('manageRole');

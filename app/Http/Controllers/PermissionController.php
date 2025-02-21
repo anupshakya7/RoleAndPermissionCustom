@@ -161,6 +161,7 @@ class PermissionController extends Controller
     {
         $permissions = Permission::all();
         $routes = Route::getRoutes();
+        // dd($routes);
 
         $middlewareGroup = 'isAuthenticated';
 

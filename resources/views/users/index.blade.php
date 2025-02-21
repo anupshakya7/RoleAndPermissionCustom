@@ -4,9 +4,11 @@
 <div class="my-3">
     <h3 class="d-inline">User</h3>
     <!-- Create Role Modal -->
+    @if(auth()->user()->hasPermissionToRoute('createUser'))
     <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#addModal">
         Create User
     </button>
+    @endif
     <!-- Create Role Modal -->
     <!-- Create Role Modal -->
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">

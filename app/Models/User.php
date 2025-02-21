@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -48,5 +49,21 @@ class User extends Authenticatable
     public function role()
     {
         return $this->hasOne(Role::class, 'id', 'role_id');
+    }
+
+    public function hasPermissionToRoute($route){
+        if($this->role->name == "Admin"){
+            return true;
+        }
+        
+        $permissions = $this->role->permissions;
+        
+        foreach($permissions as $permission){
+            if($permission->routes->contains('router',$route)){
+                return true;
+            }
+        }
+
+        return false;
     }
 }

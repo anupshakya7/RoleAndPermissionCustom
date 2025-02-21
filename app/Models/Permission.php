@@ -17,4 +17,8 @@ class Permission extends Model
     {
         return $this->belongsToMany(Role::class, 'permission_role');
     }
+
+    public function routes(){
+        return $this->hasMany(PermissionRoute::class);
+    }
 }

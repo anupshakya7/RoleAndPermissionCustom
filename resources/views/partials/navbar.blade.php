@@ -10,25 +10,38 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
+                @if(auth()->user()->hasPermissionToRoute('users'))
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{{route('users')}}">User</a>
                 </li>
+                @endif
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
                         Role & Permission
                     </a>
                     <ul class="dropdown-menu" style="width:200px">
+                        @if(auth()->user()->hasPermissionToRoute('manageRole'))
                         <li><a class="nav-link" href="{{route('manageRole')}}">Manage Roles</a></li>
+                        @endif
+                        @if(auth()->user()->hasPermissionToRoute('managePermission'))
                         <li><a class="nav-link" href="{{route('managePermission')}}">Manage Permissions</a></li>
+                        @endif
+                        @if(auth()->user()->hasPermissionToRoute('assignPermissionRole'))
                         <li><a class="nav-link" href="{{route('assignPermissionRole')}}">Assign Permission-Role</a></li>
+                        @endif
+                        @if(auth()->user()->hasPermissionToRoute('assignPermissionRoute'))
                         <li><a class="nav-link" href="{{route('assignPermissionRoute')}}">Assign Permission-Route</a>
+                        @endif
                         </li>
                     </ul>
                 </li>
+                @if(auth()->user()->hasPermissionToRoute('product.index'))
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('product.index')}}">Product</a>
                 </li>
+                @endif
+               
             </ul>
             <form class="d-flex" role="search">
                 <span class="nav-item dropdown">
